@@ -3,7 +3,7 @@ export type Filters = {
 }
 
 export type FilterFunction = {
-  (value: any): string
+  (value: any): any
 }
 
 export const defaultFilters: Filters = {

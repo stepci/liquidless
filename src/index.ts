@@ -1,7 +1,11 @@
 import flat from 'flat'
 import { defaultFilters, Filters } from './filters'
 
-function renderString (template: string, props: object, { filters: customFilters }: any): string {
+type RenderOptions = {
+  filters: Filters
+}
+
+function renderString (template: string, props: object, { filters: customFilters }: RenderOptions): string {
   const flatProps: { [key: string]: any } = flat(props)
 
   return template.replaceAll(/{{(.+?)}}/g, (a, match: string) => {
@@ -13,12 +17,12 @@ function renderString (template: string, props: object, { filters: customFilters
       .map(filter => filter.trim())
       .forEach(filter => variableValue = combinedFilters[filter](variableValue))
 
-    return variableValue
+    return variableValue.toString()
   })
 }
 
 // This is just some boilerplate code
-export function renderTemplate (template: string | object, props: object, { filters }: any) {
+export function renderTemplate (template: string | object, props: object, { filters }: RenderOptions) {
   if (typeof template === 'object') {
     return {}
   }
