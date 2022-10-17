@@ -8,5 +8,5 @@ export function renderTemplate (template: string | object, props: object) {
     return {}
   }
 
-  return template.replaceAll(/{{(.*)}}/g, (a, match) => flatProps[match])
+  return template.replaceAll(/{{(.+?)}}/g, (a, match) => flatProps[match])
 }
