@@ -1,3 +1,7 @@
 import { renderTemplate } from '../src'
 
-console.log(renderTemplate('Hello, {{world}}', { world: 'world!' }))
+console.log(renderTemplate('Hello, {{ world | uppercase | something }}', { world: 'world!' }, {
+  filters: {
+    something: (value: string) => value.toLowerCase()
+  }
+}))
