@@ -7,5 +7,5 @@ export type FilterFunction = {
 }
 
 export const defaultFilters: Filters = {
-  uppercase: (value, args) => value.toUpperCase()
+  upcase: (value, args) => value.toUpperCase()
 }

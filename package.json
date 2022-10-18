@@ -1,6 +1,6 @@
 {
   "name": "liquidjs-lite",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Shopify's Liquid template engine, but less powerful",
   "main": "dist/index.js",
   "scripts": {
