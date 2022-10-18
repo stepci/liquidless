@@ -45,7 +45,7 @@ Hello, WORLD!
 **Example: Supplying custom filters**
 
 ```js
-renderTemplate('Hello, {{ world | something 1, 2, 3 }}', { world: 'world!' }, {
+renderTemplate('Hello, {{ world | something: 1, 2, 3 }}', { world: 'world!' }, {
   filters: {
     something: (value, args) => `${value} ${args.join(', ')}`
   }
@@ -72,4 +72,4 @@ Outputs
 
 ## Filters
 
-- `upcase`, converts each character of a string to uppercase
+- `upcase` - converts each character of a string to uppercase
