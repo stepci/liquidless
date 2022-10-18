@@ -1,7 +1,7 @@
 import { renderTemplate } from '../src'
 
-console.log(renderTemplate('Hello, {{ world | uppercase | something }}', { world: 'world!' }, {
+console.log(renderTemplate('Hello, {{ world | uppercase | something: 1, 2 }}', { world: 'world!' }, {
   filters: {
-    something: (value) => value.toLowerCase()
+    something: (value, args) => value.toLowerCase()
   }
 }))

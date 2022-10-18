@@ -15,7 +15,16 @@ function renderString (template: string, props: object, { filters: customFilters
 
     filters
       .map(filter => filter.trim())
-      .forEach(filter => variableValue = combinedFilters[filter](variableValue))
+      .forEach(filter => {
+        const [filterMethod, ...args] = filter.split(':')
+        let parsedArgs: any[] | undefined
+
+        if (args.length > 0) {
+          parsedArgs = args[0].split(',').map(arg => JSON.parse(arg.trim()))
+        }
+
+        variableValue = combinedFilters[filterMethod](variableValue, parsedArgs)
+      })
 
     return variableValue.toString()
   })
