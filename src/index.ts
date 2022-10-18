@@ -2,15 +2,15 @@ import flat from 'flat'
 import { defaultFilters, Filters } from './filters'
 
 type RenderOptions = {
-  filters: Filters
+  filters?: Filters
 }
 
-function renderString (template: string, props: object, { filters: customFilters }: RenderOptions): string {
+function renderString (template: string, props: object, options?: RenderOptions): string {
   const flatProps: { [key: string]: any } = flat(props)
 
   return template.replaceAll(/{{(.+?)}}/g, (a, match: string) => {
     const [variable, ...filters] = match.split('|')
-    const combinedFilters: Filters = { ...defaultFilters, ...customFilters }
+    const combinedFilters: Filters = { ...defaultFilters, ...options?.filters }
     let variableValue = flatProps[variable.trim()]
 
     filters
@@ -30,7 +30,7 @@ function renderString (template: string, props: object, { filters: customFilters
   })
 }
 
-function renderObject (template: object, props: object, { filters }: RenderOptions): object {
+function renderObject (template: object, props: object, options?: RenderOptions): object {
   const cloned = { ...template }
 
   function recursive (obj: any) {
@@ -40,7 +40,7 @@ function renderObject (template: object, props: object, { filters }: RenderOptio
       }
 
       else if (typeof obj[key] === 'string') {
-        obj[key] = renderString(obj[key], props, { filters })
+        obj[key] = renderString(obj[key], props, options)
       }
     }
   }
@@ -50,13 +50,13 @@ function renderObject (template: object, props: object, { filters }: RenderOptio
 }
 
 // This is just some boilerplate code
-export function renderTemplate (template: string | object, props: object, { filters }: RenderOptions): string | object | never {
+export function renderTemplate (template: string | object, props: object, options?: RenderOptions): string | object | never {
   if (typeof template === 'object') {
-    return renderObject(template, props, { filters })
+    return renderObject(template, props, options)
   }
 
   if (typeof template === 'string') {
-    return renderString(template, props, { filters })
+    return renderString(template, props, options)
   }
 
   throw new Error('Expected a string or a object, got: ' + typeof template)
