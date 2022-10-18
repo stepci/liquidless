@@ -1,6 +1,6 @@
 {
-  "name": "liquid-lite",
-  "version": "1.0.0",
+  "name": "liquidjs-lite",
+  "version": "1.0.1",
   "description": "Shopify's Liquid template engine, but less powerful",
   "main": "dist/index.js",
   "scripts": {
@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/stepci/liquid-lite.git"
+    "url": "git+https://github.com/stepci/liquidjs-lite.git"
   },
   "keywords": [
     "liquid",
@@ -20,7 +20,7 @@
   "author": "Mish Ushakov <mish@stepci.com>",
   "license": "MPL-2.0",
   "bugs": {
-    "url": "https://github.com/stepci/liquid-lite/issues"
+    "url": "https://github.com/stepci/liquidjs-lite/issues"
   },
   "homepage": "https://github.com/stepci",
   "dependencies": {
