@@ -6,5 +6,5 @@ const string = renderTemplate('Hello, {{ world | uppercase | something: 1, 2 }}'
   }
 })
 
-const object = renderTemplate({"hello": {"world": "{{world}}"}}, { world: 'world!' })
+const object = renderTemplate([{"hello": {"world": "{{world}}"}}], { world: 'world!' })
 console.log(object)

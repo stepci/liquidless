@@ -1,4 +1,5 @@
 import flat from 'flat'
+import cloneDeep from 'rfdc'
 import { defaultFilters, Filters } from './filters'
 
 type RenderOptions = {
@@ -31,7 +32,7 @@ function renderString (template: string, props: object, options?: RenderOptions)
 }
 
 function renderObject (template: object, props: object, options?: RenderOptions): object {
-  const cloned = { ...template }
+  const cloned = cloneDeep()(template)
 
   function recursive (obj: any) {
     for (const key in obj) {
