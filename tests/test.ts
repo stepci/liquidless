@@ -1,7 +1,15 @@
 import { renderTemplate } from '../src'
 
-console.log(renderTemplate('Hello, {{ world | uppercase | something: 1, 2 }}', { world: 'world!' }, {
+const string = renderTemplate('Hello, {{ world | uppercase | something: 1, 2 }}', { world: 'world!' }, {
   filters: {
     something: (value, args) => value.toLowerCase()
   }
-}))
+})
+
+const object = renderTemplate({"hello": {"world": "{{world}}"}}, { world: 'world!' }, {
+  filters: {
+    something: (value, args) => value.toLowerCase()
+  }
+})
+
+console.log(object)

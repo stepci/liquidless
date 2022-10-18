@@ -30,15 +30,34 @@ function renderString (template: string, props: object, { filters: customFilters
   })
 }
 
+function renderObject (template: object, props: object, { filters }: RenderOptions): object {
+  const cloned = { ...template }
+
+  function recursive (obj: any) {
+    for (const key in obj) {
+      if (typeof obj[key] === 'object') {
+        recursive(obj[key])
+      }
+
+      else if (typeof obj[key] === 'string') {
+        obj[key] = renderString(obj[key], props, { filters })
+      }
+    }
+  }
+
+  recursive(cloned)
+  return cloned
+}
+
 // This is just some boilerplate code
-export function renderTemplate (template: string | object, props: object, { filters }: RenderOptions) {
+export function renderTemplate (template: string | object, props: object, { filters }: RenderOptions): string | object | never {
   if (typeof template === 'object') {
-    return {}
+    return renderObject(template, props, { filters })
   }
 
   if (typeof template === 'string') {
     return renderString(template, props, { filters })
   }
 
-  return new Error('Expected a string or a object, got: ' + typeof template)
+  throw new Error('Expected a string or a object, got: ' + typeof template)
 }
