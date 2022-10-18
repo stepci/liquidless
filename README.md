@@ -1,4 +1,4 @@
-# liquidjs-lite
+# liquidless
 
 Shopify's Liquid template engine, but less powerful. Perfect for configuration files
 
@@ -7,13 +7,13 @@ Shopify's Liquid template engine, but less powerful. Perfect for configuration f
 Install the dependency from npm:
 
 ```sh
-npm i liquidjs-lite
+npm i liquidless
 ```
 
 Import the `renderTemplate` function
 
 ```js
-import { renderTemplate } from 'liquidjs-lite'
+import { renderTemplate } from 'liquidless'
 ```
 
 ## Usage
