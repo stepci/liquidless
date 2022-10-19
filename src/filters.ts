@@ -3,9 +3,9 @@ export type Filters = {
 }
 
 export type FilterFunction = {
-  (value: any, args: any[] | undefined): any
+  (value: any, args: any[] | undefined, variable: string): any
 }
 
 export const defaultFilters: Filters = {
-  upcase: (value, args) => value.toUpperCase()
+  upcase: (value) => value.toUpperCase()
 }

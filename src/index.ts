@@ -24,7 +24,7 @@ function renderString (template: string, props: object, options?: RenderOptions)
           parsedArgs = args[0].split(',').map(arg => JSON.parse(arg.trim()))
         }
 
-        variableValue = combinedFilters[filterMethod](variableValue, parsedArgs)
+        variableValue = combinedFilters[filterMethod](variableValue, parsedArgs, variable)
       })
 
     return variableValue.toString()

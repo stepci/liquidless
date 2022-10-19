@@ -47,7 +47,7 @@ Hello, WORLD!
 ```js
 renderTemplate('Hello, {{ world | something: 1, 2, 3 }}', { world: 'world!' }, {
   filters: {
-    something: (value, args) => `${value} ${args.join(', ')}`
+    something: (value, args, variable) => `${value} ${args.join(', ')} (${variable})`
   }
 })
 ```
