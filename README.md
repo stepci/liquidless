@@ -21,7 +21,7 @@ import { renderTemplate } from 'liquidless'
 **Example: Rendering a string**
 
 ```js
-renderTemplate('Hello, {{ world }}', { world: 'world!' }
+renderTemplate('Hello, {{ world }}', { world: 'world!' })
 ```
 
 Outputs:
@@ -33,7 +33,7 @@ Hello, world!
 **Example: Using filters**
 
 ```js
-renderTemplate('Hello, {{ world | upcase }}', { world: 'world!' }
+renderTemplate('Hello, {{ world | upcase }}', { world: 'world!' })
 ```
 
 Outputs:
@@ -55,19 +55,19 @@ renderTemplate('Hello, {{ world | something: 1, 2, 3 }}', { world: 'world!' }, {
 Outputs:
 
 ```
-Hello, world 1, 2, 3!
+Hello, world 1, 2, 3 (world)!
 ```
 
 **Example: Rending values in an object**
 
 ```js
-renderTemplate([{'hello': {'world': '{{ world }}'}}], { world: 'world!' })
+renderTemplate([{hello: {world: '{{ world }}'}}], { world: 'world!' })
 ```
 
 Outputs
 
 ```js
-[ { hello: { world: 'world!' } } ]
+[{hello: {world: 'world!'}}]
 ```
 
 ## Filters
