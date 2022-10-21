@@ -13,7 +13,6 @@ function renderString (template: string, props: object, options?: RenderOptions)
     const [variable, ...filters] = match.split('|')
     const combinedFilters: Filters = { ...defaultFilters, ...options?.filters }
     let variableValue = flatProps[variable.trim()]
-    if (!variableValue) return "undefined"
 
     filters
       .map(filter => filter.trim())
@@ -30,7 +29,9 @@ function renderString (template: string, props: object, options?: RenderOptions)
           : variableValue
       })
 
-    return variableValue.toString()
+    return variableValue
+      ? variableValue.toString()
+      : "undefined"
   })
 }
 
