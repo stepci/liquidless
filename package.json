@@ -1,8 +1,11 @@
 {
   "name": "liquidless",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Shopify's Liquid template engine, but less powerful",
   "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "build:watch": "tsc -w -p tsconfig.json",
@@ -18,7 +21,7 @@
     "template"
   ],
   "author": "Mish Ushakov <mish@stepci.com>",
-  "license": "MPL-2.0",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/stepci/liquidless/issues"
   },

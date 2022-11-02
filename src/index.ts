@@ -21,7 +21,9 @@ function renderString (template: string, props: object, options?: RenderOptions)
         let parsedArgs: any[] | undefined
 
         if (args.length > 0) {
-          parsedArgs = args[0].split(',').map(arg => JSON.parse(arg.trim()))
+          parsedArgs = args[0].split(',')
+            .map(arg => arg.trim())
+            .map(arg => isNaN(parseInt(arg)) ? arg : parseInt(arg))
         }
 
         variableValue = combinedFilters[filterMethod]
