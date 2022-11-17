@@ -1,6 +1,6 @@
 {
   "name": "liquidless",
-  "version": "1.0.9",
+  "version": "1.1.0",
   "description": "Shopify's Liquid template engine, but less powerful",
   "main": "dist/index.js",
   "files": [
