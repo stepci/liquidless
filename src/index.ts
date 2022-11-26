@@ -7,7 +7,7 @@ type RenderOptions = {
   delimiters?: string[]
 }
 
-function renderString (template: string, props: object, options?: RenderOptions): string {
+export function renderString (template: string, props: object, options?: RenderOptions): string {
   const flatProps: { [key: string]: any } = flat(props)
   let delimiters = ['{{', '}}']
   if (options?.delimiters) delimiters = options.delimiters
@@ -40,8 +40,8 @@ function renderString (template: string, props: object, options?: RenderOptions)
   })
 }
 
-function renderObject (template: object, props: object, options?: RenderOptions): object {
-  const cloned = cloneDeep()(template)
+export function renderObject <T> (object: object, props: object, options?: RenderOptions): T {
+  const cloned = cloneDeep()(object)
 
   function recursive (obj: any) {
     for (const key in obj) {
@@ -56,18 +56,5 @@ function renderObject (template: object, props: object, options?: RenderOptions)
   }
 
   recursive(cloned)
-  return cloned
-}
-
-// This is just some boilerplate code
-export function renderTemplate (template: string | object, props: object, options?: RenderOptions): string | object | never {
-  if (typeof template === 'object') {
-    return renderObject(template, props, options)
-  }
-
-  if (typeof template === 'string') {
-    return renderString(template, props, options)
-  }
-
-  throw new Error('Expected a string or a object, got: ' + typeof template)
+  return cloned as T
 }

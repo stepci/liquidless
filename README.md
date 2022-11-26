@@ -10,10 +10,10 @@ Install the dependency from npm:
 npm i liquidless
 ```
 
-Import the `renderTemplate` function
+Import the `renderString` function
 
 ```js
-import { renderTemplate } from 'liquidless'
+import { renderString } from 'liquidless'
 ```
 
 ## Usage
@@ -21,7 +21,7 @@ import { renderTemplate } from 'liquidless'
 **Example: Rendering a string**
 
 ```js
-renderTemplate('Hello, {{ world }}', { world: 'world!' })
+renderString('Hello, {{ world }}', { world: 'world!' })
 ```
 
 Outputs:
@@ -33,7 +33,7 @@ Hello, world!
 **Example: Using filters**
 
 ```js
-renderTemplate('Hello, {{ world | upcase }}', { world: 'world!' })
+renderString('Hello, {{ world | upcase }}', { world: 'world!' })
 ```
 
 Outputs:
@@ -45,7 +45,7 @@ Hello, WORLD!
 **Example: Supplying custom filters**
 
 ```js
-renderTemplate('Hello, {{ world | something: 1, 2, 3 }}', { world: 'world!' }, {
+renderString('Hello, {{ world | something: 1, 2, 3 }}', { world: 'world!' }, {
   filters: {
     something: (value, args, variable) => `${value} ${args.join(', ')} (${variable})`
   }
@@ -61,7 +61,8 @@ Hello, world 1, 2, 3 (world)!
 **Example: Rending values in an object**
 
 ```js
-renderTemplate([{hello: {world: '{{ world }}'}}], { world: 'world!' })
+import { renderObject } from 'liquidless'
+renderObject([{hello: {world: '{{ world }}'}}], { world: 'world!' })
 ```
 
 Outputs
