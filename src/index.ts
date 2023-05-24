@@ -7,12 +7,12 @@ type RenderOptions = {
   delimiters?: string[]
 }
 
-export function renderString (template: string, props: object, options?: RenderOptions): string {
+export function renderString (template: string, props: object, options?: RenderOptions) {
   const flatProps: { [key: string]: any } = flat(props)
   let delimiters = ['{{', '}}']
   if (options?.delimiters) delimiters = options.delimiters
 
-  return template.replaceAll(new RegExp(`\\${delimiters[0]}(.+?)${delimiters[1]}`, 'g'), (a, match: string) => {
+  return template.replaceAll(new RegExp(`\\${delimiters[0]}(.+?)${delimiters[1]}`, 'g'), (_, match: string) => {
     const [variable, ...filters] = match.split('|')
     const combinedFilters: Filters = { ...defaultFilters, ...options?.filters }
     let variableValue = flatProps[variable.trim()]
@@ -50,7 +50,8 @@ export function renderObject <T> (object: object, props: object, options?: Rende
       }
 
       else if (typeof obj[key] === 'string') {
-        obj[key] = renderString(obj[key], props, options)
+        const rendered = renderString(obj[key], props, options)
+        obj[key] = isNaN(parseInt(rendered)) ? rendered : parseInt(rendered)
       }
     }
   }
