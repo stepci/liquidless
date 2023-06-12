@@ -7,6 +7,10 @@ type RenderOptions = {
   delimiters?: string[]
 }
 
+function isNumeric (value: string) {
+  return /^-?\d+$/.test(value)
+}
+
 export function renderString (template: string, props: object, options?: RenderOptions) {
   const flatProps: { [key: string]: any } = flat(props)
   let delimiters = ['{{', '}}']
@@ -24,7 +28,9 @@ export function renderString (template: string, props: object, options?: RenderO
         let parsedArgs: any[] | undefined
 
         if (args.length > 0) {
-          parsedArgs = args[0].split(',').map(arg => arg.trim())
+          parsedArgs = args[0].split(',')
+            .map(arg => arg.trim())
+            .map(arg => isNumeric(arg) ? parseInt(arg) : arg)
         }
 
         variableValue = combinedFilters[filterMethod]
@@ -48,8 +54,7 @@ export function renderObject <T> (object: object, props: object, options?: Rende
       }
 
       else if (typeof obj[key] === 'string') {
-        const rendered = renderString(obj[key], props, options)
-        obj[key] = isNaN(parseInt(rendered)) ? rendered : parseInt(rendered)
+        obj[key] = renderString(obj[key], props, options)
       }
     }
   }
