@@ -24,9 +24,7 @@ export function renderString (template: string, props: object, options?: RenderO
         let parsedArgs: any[] | undefined
 
         if (args.length > 0) {
-          parsedArgs = args[0].split(',')
-            .map(arg => arg.trim())
-            .map(arg => isNaN(parseInt(arg)) ? arg : parseInt(arg))
+          parsedArgs = args[0].split(',').map(arg => arg.trim())
         }
 
         variableValue = combinedFilters[filterMethod]

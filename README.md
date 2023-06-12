@@ -74,3 +74,7 @@ Outputs
 ## Filters
 
 - `upcase` - converts each character of a string to uppercase
+- `downcase` - each character of a string to lowercase
+- `toInt` - converts a value to Int
+- `toFloat` - converts a value to Float
+- `toString` - converts a value to String
