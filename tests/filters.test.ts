@@ -37,30 +37,30 @@ describe('defaultFilters', () => {
             expect(defaultFilters.toString(123.123, [], '')).toBe('123.123');
         });
     });
+});
 
-    describe('parseArgs', () => {
-        test('should parse filter arguments', () => {
-            expect(parseArgs('1, 2')).toEqual([1, 2]);
-            expect(parseArgs('"test", 2')).toEqual(['test', 2]);
-            expect(parseArgs('\'test\', 2')).toEqual(['test', 2]);
-        });
+describe('parseArgs', () => {
+    test('should parse filter arguments', () => {
+        expect(parseArgs('1, 2')).toEqual([1, 2]);
+        expect(parseArgs('"test", 2')).toEqual(['test', 2]);
+        expect(parseArgs('\'test\', 2')).toEqual(['test', 2]);
+    });
 
-        test('should parse quoted strings', () => {
-            expect(parseArgs('"test"')).toEqual(['test']);
-            expect(parseArgs('\'test\'')).toEqual(['test']);
-        });
+    test('should parse quoted strings', () => {
+        expect(parseArgs('"test"')).toEqual(['test']);
+        expect(parseArgs('\'test\'')).toEqual(['test']);
+    });
 
-        test('should parse numbers', () => {
-            expect(parseArgs('1, 2')).toEqual([1, 2]);
-            expect(parseArgs('1.1, 2.2')).toEqual([1.1, 2.2]);
-        });
+    test('should parse numbers', () => {
+        expect(parseArgs('1, 2')).toEqual([1, 2]);
+        expect(parseArgs('1.1, 2.2')).toEqual([1.1, 2.2]);
+    });
 
-        test('should parse booleans', () => {
-            expect(parseArgs('true, false')).toEqual([true, false]);
-        });
+    test('should parse booleans', () => {
+        expect(parseArgs('true, false')).toEqual([true, false]);
+    });
 
-        test('should parse null', () => {
-            expect(parseArgs('null')).toEqual([null]);
-        });
+    test('should parse null', () => {
+        expect(parseArgs('null')).toEqual([null]);
     });
 });
