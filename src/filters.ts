@@ -15,13 +15,14 @@ export const defaultFilters: Filters = {
   toString: (value: any) => value.toString(),
 }
 
-const QUOTED_STRING_REGEX = /^(["'])(?<string>.+)\1$/;
+const QUOTED_STRING_REGEX = /^(["'])(?<string>.+)\1$/
 
-export const parseArgs = (args: string) => args.length > 0
-  ? args.split(',')
-      .map(arg => arg.trim())
-      .map(arg => QUOTED_STRING_REGEX.test(arg)
-        ? arg.slice(1, -1)
-        : JSON.parse(arg)
-      )
-  : []
+export const parseArgs = (args: string) =>
+  args.length > 0
+    ? args
+        .split(',')
+        .map((arg) => arg.trim())
+        .map((arg) =>
+          QUOTED_STRING_REGEX.test(arg) ? arg.slice(1, -1) : JSON.parse(arg)
+        )
+    : []

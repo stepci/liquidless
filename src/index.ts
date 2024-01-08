@@ -6,18 +6,25 @@ export type RenderOptions = {
   delimiters?: string[]
 }
 
-const getType = (value: any) => (Array.isArray(value) ? "array" : value === null ? "null" : typeof value);
+const getType = (value: any) =>
+  Array.isArray(value) ? 'array' : value === null ? 'null' : typeof value
 
-export function renderString(template: string, props: Record<string, any>, options?: RenderOptions): string  | any {
-  const delimiters = options?.delimiters ?? ['{{', '}}'];
+export function renderString(
+  template: string,
+  props: Record<string, any>,
+  options?: RenderOptions
+): string | any {
+  const delimiters = options?.delimiters ?? ['{{', '}}']
 
-  const expressions = template.split(new RegExp(`\\${delimiters[0]}(.+?)${delimiters[1]}`, 'g'))
+  const expressions = template.split(
+    new RegExp(`\\${delimiters[0]}(.+?)${delimiters[1]}`, 'g')
+  )
 
   const combinedFilters: Filters = { ...defaultFilters, ...options?.filters }
   for (let i = 1; i < expressions.length; i += 2) {
     const [variable, ...filters] = expressions[i]
       .split('|')
-      .map(s => s.trim())
+      .map((s) => s.trim())
 
     const variableValue = props[variable]
 
@@ -28,22 +35,30 @@ export function renderString(template: string, props: Record<string, any>, optio
       return combinedFilters[filterMethod]
         ? combinedFilters[filterMethod](variableValue, parsedArgs, variable)
         : variableValue
-    }, variableValue);
+    }, variableValue)
   }
 
   // if there are no other expressions, return the first one which can be of any type, for example a number
-  if (expressions.length === 3 && expressions[0] === "" && expressions[2] === "") {
-    return expressions[1];
+  if (
+    expressions.length === 3 &&
+    expressions[0] === '' &&
+    expressions[2] === ''
+  ) {
+    return expressions[1]
   }
 
-  return expressions.join('');
+  return expressions.join('')
 }
 
-export function renderObject<T extends object>(object: object, props: object, options?: RenderOptions): T {
+export function renderObject<T extends object>(
+  object: object,
+  props: object,
+  options?: RenderOptions
+): T {
   const flatProps: Record<PropertyKey, unknown> = flat(props)
 
   const transform = <T extends object>(obj: T) => {
-    const transformedNode = new (Object.getPrototypeOf(obj).constructor)();
+    const transformedNode = new (Object.getPrototypeOf(obj).constructor)()
     for (const [key, value] of Object.entries(obj)) {
       const nodeType = getType(value)
 
