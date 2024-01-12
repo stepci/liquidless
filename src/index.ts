@@ -1,64 +1,78 @@
 import flat from 'flat'
-import cloneDeep from 'rfdc'
-import { defaultFilters, Filters } from './filters'
+import { defaultFilters, Filters, parseArgs } from './filters'
 
-type RenderOptions = {
+export type RenderOptions = {
   filters?: Filters
   delimiters?: string[]
 }
 
-function isNumeric (value: string) {
-  return /^-?\d+$/.test(value)
-}
+const getType = (value: any) =>
+  Array.isArray(value) ? 'array' : value === null ? 'null' : typeof value
 
-export function renderString (template: string, props: object, options?: RenderOptions) {
-  const flatProps: { [key: string]: any } = flat(props)
-  let delimiters = ['{{', '}}']
-  if (options?.delimiters) delimiters = options.delimiters
+export function renderString(
+  template: string,
+  props: Record<string, any>,
+  options?: RenderOptions
+): string | any {
+  const delimiters = options?.delimiters ?? ['{{', '}}']
 
-  return template.replaceAll(new RegExp(`\\${delimiters[0]}(.+?)${delimiters[1]}`, 'g'), (_, match: string) => {
-    const [variable, ...filters] = match.split('|')
-    const combinedFilters: Filters = { ...defaultFilters, ...options?.filters }
-    let variableValue = flatProps[variable.trim()]
+  const expressions = template.split(
+    new RegExp(`\\${delimiters[0]}(.+?)${delimiters[1]}`, 'g')
+  )
 
-    filters
-      .map(filter => filter.trim())
-      .forEach(filter => {
-        const [filterMethod, ...args] = filter.split(':')
-        let parsedArgs: any[] | undefined
+  const combinedFilters: Filters = { ...defaultFilters, ...options?.filters }
+  for (let i = 1; i < expressions.length; i += 2) {
+    const [variable, ...filters] = expressions[i]
+      .split('|')
+      .map((s) => s.trim())
 
-        if (args.length > 0) {
-          parsedArgs = args[0].split(',')
-            .map(arg => arg.trim())
-            .map(arg => isNumeric(arg) ? parseInt(arg) : arg)
-        }
+    const variableValue = props[variable]
 
-        variableValue = combinedFilters[filterMethod]
-          ? combinedFilters[filterMethod](variableValue, parsedArgs, variable.trim())
-          : variableValue
-      })
+    expressions[i] = filters.reduce((variableValue, filter) => {
+      const [filterMethod, args] = filter.split(':')
+      const parsedArgs = parseArgs(args ?? '')
 
-    return variableValue
-      ? variableValue.toString()
-      : "undefined"
-  })
-}
-
-export function renderObject <T> (object: object, props: object, options?: RenderOptions): T {
-  const cloned = cloneDeep()(object)
-
-  function recursive (obj: any) {
-    for (const key in obj) {
-      if (typeof obj[key] === 'object') {
-        recursive(obj[key])
-      }
-
-      else if (typeof obj[key] === 'string') {
-        obj[key] = renderString(obj[key], props, options)
-      }
-    }
+      return combinedFilters[filterMethod]
+        ? combinedFilters[filterMethod](variableValue, parsedArgs, variable)
+        : variableValue
+    }, variableValue)
   }
 
-  recursive(cloned)
-  return cloned as T
+  // if there are no other expressions, return the first one which can be of any type, for example a number
+  if (
+    expressions.length === 3 &&
+    expressions[0] === '' &&
+    expressions[2] === ''
+  ) {
+    return expressions[1]
+  }
+
+  return expressions.join('')
+}
+
+export function renderObject<T extends object>(
+  object: object,
+  props: object,
+  options?: RenderOptions
+): T {
+  const flatProps: Record<PropertyKey, unknown> = flat(props)
+
+  const transform = <T extends object>(obj: T) => {
+    const transformedNode = new (Object.getPrototypeOf(obj).constructor)()
+    for (const [key, value] of Object.entries(obj)) {
+      const nodeType = getType(value)
+
+      if (nodeType === 'object' || nodeType === 'array') {
+        transformedNode[key] = transform(value)
+      } else if (nodeType === 'string') {
+        transformedNode[key] = renderString(value, flatProps, options)
+      } else {
+        transformedNode[key] = value
+      }
+    }
+
+    return transformedNode
+  }
+
+  return transform(object) as T
 }

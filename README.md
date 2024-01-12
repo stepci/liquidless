@@ -55,7 +55,7 @@ renderString('Hello, {{ world | something: 1, 2, 3 }}', { world: 'world!' }, {
 Outputs:
 
 ```
-Hello, world 1, 2, 3 (world)!
+Hello, world! 1, 2, 3 (world)
 ```
 
 **Example: Rending values in an object**
