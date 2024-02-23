@@ -16,13 +16,12 @@ export const defaultFilters: Filters = {
 }
 
 const QUOTED_STRING_REGEX = /^(["'])(?<string>.+)\1$/
+const splitPattern = /,(?![^{}]*})/g
 
 export const parseArgs = (args: string) =>
   args.length > 0
     ? args
-        .split(',')
+        .split(splitPattern)
         .map((arg) => arg.trim())
-        .map((arg) =>
-          QUOTED_STRING_REGEX.test(arg) ? arg.slice(1, -1) : JSON.parse(arg)
-        )
+        .map((arg) =>QUOTED_STRING_REGEX.test(arg) ? arg.slice(1, -1) : JSON.parse(arg))
     : []

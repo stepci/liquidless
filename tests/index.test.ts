@@ -80,6 +80,22 @@ describe('renderString', () => {
       ).toBe('Hello, averylongl!')
     })
 
+    test('should render a string using a custom filter with JSON arguments', () => {
+      expect(
+        renderString(
+          `Hello, {{ name | json: {"hello": "world", "world": "hello"} }}`,
+          { name: 'world' },
+          {
+            filters: {
+              json: (value, args) => {
+                return JSON.stringify(args)
+              }
+            },
+          }
+        )
+      ).toBe('Hello, [{"hello":"world","world":"hello"}]')
+    })
+
     test('should return the actual value if there is just one expression', () => {
       expect(renderString('{{ value }}', { value: 123 })).toBe(123)
       expect(renderString('{{ value }} {{ value }}', { value: 123 })).toBe(

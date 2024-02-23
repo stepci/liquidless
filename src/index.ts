@@ -29,7 +29,8 @@ export function renderString(
     const variableValue = props[variable]
 
     expressions[i] = filters.reduce((variableValue, filter) => {
-      const [filterMethod, args] = filter.split(':')
+      const splitPattern = /:(?![^{}]*})/g
+      const [filterMethod, args] = filter.split(splitPattern)
       const parsedArgs = parseArgs(args ?? '')
 
       return combinedFilters[filterMethod]

@@ -36,7 +36,7 @@ describe('defaultFilters', () => {
 
   describe('toString', () => {
     test('should convert a value to a string', () => {
-      expect(defaultFilters.toString(123.123, [], '')).toBe('123.123')
+      expect(defaultFilters['toString'](123.123, [], '')).toBe('123.123')
     })
   })
 })
