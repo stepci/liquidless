@@ -1,3 +1,5 @@
+import JSON5 from 'json5'
+
 export type Filters = {
   [key: string]: FilterFunction
 }
@@ -23,5 +25,5 @@ export const parseArgs = (args: string) =>
     ? args
         .split(splitPattern)
         .map((arg) => arg.trim())
-        .map((arg) =>QUOTED_STRING_REGEX.test(arg) ? arg.slice(1, -1) : JSON.parse(arg))
+        .map((arg) =>QUOTED_STRING_REGEX.test(arg) ? arg.slice(1, -1) : JSON5.parse(arg))
     : []
