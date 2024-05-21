@@ -2,7 +2,10 @@
   "extends": "@tsconfig/node16/tsconfig.json",
   "compilerOptions": {
     "outDir": "dist",
-    "declaration": true
+    "declaration": true,
+    "lib": [
+      "ES2021.String"
+    ]
   },
   "include": ["src/**/*.ts"]
 }
