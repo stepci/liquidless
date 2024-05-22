@@ -20,7 +20,7 @@ export const defaultFilters: Filters = {
   base64_decode: (value: string) => atob(value),
   base64_encode: (value: any) => btoa(value),
   camelize: (value: string) => value.replace(/[_.-](\w|$)/g, (_, x) => x.toUpperCase()),
-  escape: (value: string) => value.replace( /[&"'<>]/g, c => htmlEscapeLookup[c] ),
+  escape: (value: string) => value.replace( /[&"'<>]/g, c => htmlEscapeLookup.get(c)!),
   hmac_sha1: (value: any) => crypto.createHash("sha1").update(value).digest("hex"),
   hmac_sha256: (value: any) => crypto.createHash("sha256").update(value).digest("hex"),
   lstrip: (value: string) => value.trimStart(),
@@ -48,20 +48,20 @@ export const defaultFilters: Filters = {
 
 const QUOTED_STRING_REGEX = /^(["'])(?<string>.+)\1$/
 const splitPattern = /,(?![^{}]*})/g
-const htmlEscapeLookup = {
-  '&': "&amp;",
-  '"': "&quot;",
-  '\'': "&apos;",
-  '<': "&lt;",
-  '>': "&gt;"
-};
+const htmlEscapeLookup = new Map<string,string>([
+  ['&', '&amp;'],
+  ['"', '&quot;'],
+  ['\'', '&apos;'],
+  ['<', '&lt;'],
+  ['>', '&gt;'],
+]);
 
-function replace_first(str,substr,newstr: string) {
+function replace_first(str: string, substr: string, newstr: string) {
   const pos = str.indexOf(substr);
   return pos < 0 ? str : str.substring(0, pos) + newstr + str.substring(pos+substr.length);
 }
 
-function replace_last(str,substr,newstr: string) {
+function replace_last(str: string, substr: string, newstr: string) {
   const pos = str.lastIndexOf(substr);
   return pos < 0 ? str : str.substring(0, pos) + newstr + str.substring(pos+substr.length);
 }
