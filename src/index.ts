@@ -28,6 +28,12 @@ export function renderString(
 
     const variableValue = props[variable]
 
+    // If the variable doesn't exist, do not process the template 
+    if (variableValue === undefined) {
+      expressions[i] = `${delimiters[0]}${expressions[i]}${delimiters[1]}`
+      continue
+    }
+
     expressions[i] = filters.reduce((variableValue, filter) => {
       const splitPattern = /:(?![^{}]*})/g
       const [filterMethod, args] = filter.split(splitPattern)

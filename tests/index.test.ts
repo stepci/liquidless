@@ -106,10 +106,21 @@ describe('renderString', () => {
       expect(renderString('Test {{ value }}', { value: 123 })).toBe('Test 123')
     })
 
-    test('should return ignore invalid filters', () => {
+    test('should ignore invalid filters', () => {
       expect(renderString('{{ value | invalidFilter }}', { value: 123 })).toBe(
         123
       )
+    })
+
+    test('should ignore undefined props', () => {
+      expect(renderString(
+        '{{ prefix }}/{{ suffix }}',
+        { prefix: 'abc' }
+      )).toBe('abc/{{ suffix }}')
+      expect(renderString(
+        '{{ prefix }}/{{ suffix | upcase }}',
+        { prefix: 'abc' }
+      )).toBe('abc/{{ suffix | upcase }}')
     })
   })
 })
@@ -134,5 +145,12 @@ describe('renderObject', () => {
       nullField: null,
       list: [1, 1234, 3],
     })
+  })
+
+  test('should ignore undefined props', () => {
+    expect(renderObject(
+      { key: '{{ nested.prefix }}/{{ nested.suffix }}' },
+      { nested: { prefix: 'abc' } }
+    )).toEqual({ key: 'abc/{{ nested.suffix }}' })
   })
 })
