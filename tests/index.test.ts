@@ -135,4 +135,13 @@ describe('renderObject', () => {
       list: [1, 1234, 3],
     })
   })
+
+  test('should render object keys too', () => {
+    expect(
+      renderObject(
+        [{ '{{ hello }}': { '{{ foo }}': '{{ world }}' } }],
+        { hello: 'hey!', world: 'world!', foo: 'bar' }
+      )
+    ).toEqual([{ 'hey!': { 'bar': 'world!' } }])
+  })
 })

@@ -63,12 +63,14 @@ export function renderObject<T extends object>(
     for (const [key, value] of Object.entries(obj)) {
       const nodeType = getType(value)
 
+      const transformedKey = renderString(key, flatProps, options)
+
       if (nodeType === 'object' || nodeType === 'array') {
-        transformedNode[key] = transform(value)
+        transformedNode[transformedKey] = transform(value)
       } else if (nodeType === 'string') {
-        transformedNode[key] = renderString(value, flatProps, options)
+        transformedNode[transformedKey] = renderString(value, flatProps, options)
       } else {
-        transformedNode[key] = value
+        transformedNode[transformedKey] = value
       }
     }
 
